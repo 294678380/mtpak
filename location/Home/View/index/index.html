@@ -1,0 +1,151 @@
+<extend name="inculd:public"/>
+<block name='banner'>
+	<div class="banner">
+			<div class="swiper-wrapper">
+			    <div class="swiper-slide"><img src="__IMAGES__banner.jpg"/></div>
+			    <div class="swiper-slide"><img src="__IMAGES__banner.jpg"/></div>
+			    <div class="swiper-slide"><img src="__IMAGES__banner.jpg"/></div>
+			 </div>
+			 <div class="swiper-pagination"></div>
+		</div>
+</block>
+<block name='container'>
+	
+		<!--内容区-->
+	
+		<div class="container">
+			<!--top-->
+			<div class="mt-ctop">
+				<volist name="prolist" id="row" offset="0" length='3'>
+					<a data-uid="{$row.id}" title="{$row.title}" href="{:U('procontent',array('id'=>$row['id']))}" class="mt-top-c mt-top-c{$i} mtpro">
+						<div class="mtl">
+							<p>{:substr($row['title'],0,5)}</p>
+							<div class="strleng">{:substr($row['title'],0,23)}...</div>
+							<span>GO</span>
+						</div>
+						<div class="mtr">
+							<img src="__IMAGES__{$row.timg}"/>
+						</div>
+					</a>
+				</volist>
+			</div>
+			<!--top::end-->
+			<!--center-->
+			<div class="mt-center">
+				<volist name="prolist" id="row" offset="3" length='4' mod="3">
+					<if condition="$mod eq '1'">
+						<a data-uid="{$row.id}" title="{$row.title}" href="{:U('procontent',array('id'=>$row['id']))}" class="mt-random-list mtpro">
+							<img src="__IMAGES__{$row.timg}"/>
+						</a>
+						<else />
+						<a data-uid="{$row.id}" title="{$row.title}" href="{:U('procontent',array('id'=>$row['id']))}" class="mt-random-list mtpro">
+							<div class="mt-random-list-bg blur"><img src="__IMAGES__{$row.timg}"/></div>
+							<div class="mrl-img">
+								<img src="__IMAGES__{$row.timg}"/>
+							</div>
+							<div class="mrl-text">
+								<span>{:substr($row['title'],0,5)}</span>
+								{:substr($row['title'],0,23)}...
+							</div>
+						</a>
+					</if>
+				</volist>
+				<!--随机列表-->
+			</div>
+			<!--center:end-->
+			<!--footer-->
+			<div class="mt-footer">
+				<volist name="prolist" id="row" offset="7" length='2'>
+					<a data-uid="{$row.id}" title="{$row.title}" href="{:U('procontent',array('id'=>$row['id']))}" class="mt-random-list mtpro">
+						<div class="mrlf-top">
+								<div class="mt-random-list-bg blur"><img src="__IMAGES__{$row.timg}"/></div>
+								<div class="mrl-img"><img src="__IMAGES__{$row.timg}"/></div>
+						</div>
+						<div class="mrlf-bot">
+							<p>{:substr($row['title'],0,5)}</p>
+							<span>{:substr($row['title'],5)}</span>
+						</div>
+					</a>
+				</volist>
+			</div>
+			<!--footer::end-->
+			
+			<!--center-->
+			<div class="mt-center">
+				<!--随机列表-->
+				<volist name="prolist" id="row" offset="9" length='4' mod="3">
+					<if condition="$mod eq '1'">
+						<a data-uid="{$row.id}" title="{$row.title}" href="{:U('procontent',array('id'=>$row['id']))}" class="mt-random-list mtpro">
+							<img src="__IMAGES__{$row.timg}"/>
+						</a>
+						<else />
+						<a data-uid="{$row.id}" title="{$row.title}" href="{:U('procontent',array('id'=>$row['id']))}" class="mt-random-list mtpro">
+							<div class="mt-random-list-bg blur"><img src="__IMAGES__{$row.timg}"/></div>
+							<div class="mrl-img"><img src="__IMAGES__{$row.timg}"/></div>
+							<div class="mrl-text">
+								<span>{:substr($row['title'],0,5)}</span>
+								{:substr($row['title'],0,23)}...
+							</div>
+						</a>
+					</if>
+				</volist>
+			</div>
+			<!--center:end-->
+		</div>
+		<!--内容区::end-->
+		<div class="loading none">
+			<img src="__IMAGES__loading.gif"/><br/> loading...
+		</div>
+</block>
+<block name="script">
+	<script>
+		$(document).ready(function(){
+			(function(){
+					var _win = $(window),
+					docheight = $(document).height(),
+					winheight = $(window).height(),
+					//底部高度
+					bottomtop = docheight-winheight,
+					stime = null;
+					
+					_win.resize(function(){
+						docheight = $(document).height();
+						winheight = $(window).height();
+						bottomtop = docheight-winheight;
+					});
+					_win.scroll(function(){
+						var scrolltop = $(this).scrollTop(),
+						scrollto = bottomtop-scrolltop;
+						if(scrollto<=20){
+							if(stime==null){
+								stime = setTimeout(function(){
+									//开始加载
+									$(".loading").show();
+									var mtpro = $(".mtpro"),
+									htmlobj="",
+									//记录最后id
+									lastuid = mtpro.eq(mtpro.length-1).attr("data-uid");
+									MT.getNextPro("{:U('prolistshow')}",lastuid,10,function(msg){
+										//等于0加载完成
+										if(msg==="0"){
+											$(".loading").html("Loading completed");
+											return false;
+										}
+										//组合加载元素
+										 htmlobj +=  MT.mtcenter(msg,0,4);
+										 htmlobj +=  MT.mtfooter(msg,4,2);
+										 htmlobj +=  MT.mtcenter(msg,6,4);
+										 //插入
+										$(".container").append(htmlobj);
+										//加载完成
+										$(".loading").hide();
+										stime = null;
+									});
+								},800);//settimeover
+							};//if stime==null end
+						}//if scrollto<=20 end
+					});//scrollevent end
+				})();
+		});
+	</script>
+</block>

@@ -1,0 +1,25 @@
+[ 2016-05-26T14:00:25+08:00 ] ::1 /zhangtaifeng/mtpak/home/index.html
+ERR: SQLSTATE[28000] [1045] Access denied for user 'mt-sql'@'localhost' (using password: YES)
+
+[ 2016-05-26T16:11:45+08:00 ] ::1 /zhangtaifeng/mtpak/home/index.html/3
+ERR: 无法加载控制器:Index.html
+
+[ 2016-05-26T16:11:50+08:00 ] ::1 /zhangtaifeng/mtpak/home/index.html/uid/3
+ERR: 无法加载控制器:Index.html
+
+[ 2016-05-26T16:13:01+08:00 ] ::1 /zhangtaifeng/mtpak/home/index.html/uid/63
+ERR: 无法加载控制器:Index.html
+
+[ 2016-05-26T16:13:09+08:00 ] ::1 /zhangtaifeng/mtpak/home/index//uid/63
+ERR: 非法操作:uid
+
+[ 2016-05-26T16:13:13+08:00 ] ::1 /zhangtaifeng/mtpak/home/index/uid/63
+ERR: 非法操作:uid
+
+[ 2016-05-26T16:18:11+08:00 ] ::1 /zhangtaifeng/mtpak/home/index.html?uid=60
+ERR: 1064:You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'limete 13' at line 1
+ [ SQL语句 ] : SELECT * FROM admin_pro WHERE ('id' > 60 ) limete 13
+
+[ 2016-05-26T16:34:21+08:00 ] ::1 /zhangtaifeng/mtpak/home/index.html?uid=95
+ERR: Think\Controller:assgin方法不存在！
+

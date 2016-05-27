@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+		<meta content="yes" name="apple-mobile-web-app-capable">
+		<meta content="black" name="apple-mobile-web-app-status-bar-style">
+		<meta http-equiv="Cache-Control" content="no-cache">
+		<meta content="telephone=no" name="format-detection">
+		<title>{$title?$title:'mtpak'}</title>
+		<link rel="stylesheet" type="text/css" href="__CSS__viewport.css"/>
+		<link rel="stylesheet" type="text/css" href="__CSS__swiper-3.3.0.min.css"/>
+		<script src="__JS__jquery-1.8.3.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__JS__base.js" type="text/javascript" charset="utf-8"></script>
+		<script src="__JS__angular/angular.min.js" type="text/javascript" charset="utf-8"></script>
+		<!--[if lt IE 9]><script type="text/javascript" src="__JS__html5.js"></script><![endif]-->
+	</head>
+	<script type="text/javascript">
+		var windowwidth = $(window).width();
+	</script>
+	<body>
+		<header>
+					<p>{$headertitle}</p>
+					<div class="heading">
+						<div class="headingbox">
+							<div class="logo">
+								<img src="__IMAGES__logo.png" />
+							</div>
+							<a href="javascript:;" class="phone">
+								{$tel}
+							</a>
+						</div>
+					</div>
+				</header>
+		
+		<block name="banner">
+			
+		</block>
+		<block name="container">
+			
+		</block>
+		
+		<footer>
+			<p>phone：{$tel} &nbsp;&nbsp;&nbsp; |  &nbsp;&nbsp;&nbsp;   QQ：{$qq}</p>
+			<span>{$copy}</span>
+		</footer>
+		<script src="__JS__swiper-3.3.0.jquery.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript">
+			//滚动
+					var mySwiper = new Swiper('.banner', {
+							autoplay: 5000,//可选选项，自动滑动
+							autoplayDisableOnInteraction:false,
+							pagination : '.swiper-pagination',
+							paginationType:"fraction",
+							loop:true
+						});
+					if(windowwidth<=720){
+						$(".phone").attr("href","tel:{$tel}");
+					}
+					$(document).ready(function(){
+						$("img").on("error",function(){
+							$(this).attr("src","__IMAGES__loading.gif");
+						});
+					});
+					var MT = {
+				//请求数据
+				getNextPro:function(url,uid,len,callback){	
+					$.ajax({
+						type:"post",
+						url:url,
+						async:true,
+						data:{
+							"uid":uid,
+							"len":len
+						}
+					}).done(callback).fail(function(){
+						alert("Request failed, please check your network!")
+					});
+				},
+				//获得随机数
+				getrand:function (begin,end){
+					return Math.floor(Math.random()*(end-begin))+begin;
+					
+				},
+				//四列
+				mtcenter:function(msg,start,len){  //msg=数据,start=开始位置,len=数量
+					if(msg[start]==undefined){
+						return "";
+					}
+					var mtcentert = "<div class='mt-center'>",
+						slen=start+len,
+						i=start,
+						rand = MT.getrand(1,5)-1;
+						for(i;i<slen;i++){
+							if(msg[i]!=undefined){
+								if(i==rand){
+									mtcentert += '<a data-uid="'+msg[i].id+'" title="'+msg[i].title+'" href="__PRO__'+msg[i].id+'.html" class="mt-random-list mtpro">';
+									mtcentert += '<img src="__IMAGES__'+msg[i].timg+'"/>';
+									mtcentert += '</a>';
+								}else{
+									mtcentert += '<a data-uid="'+msg[i].id+'" title="'+msg[i].title+'" href="__PRO__'+msg[i].id+'.html" class="mt-random-list mtpro">';
+									mtcentert += '<div class="mt-random-list-bg blur"><img src="__IMAGES__'+msg[i].timg+'"/></div>';
+									mtcentert += '<div class="mrl-img"><img src="__IMAGES__'+msg[i].timg+'"/></div>';
+									mtcentert += '<div class="mrl-text"><span>'+msg[i].title.substr(0,5)+'</span>'+msg[i].title.substr(0,23)+'...</div>';
+									mtcentert += '</a>';
+								}
+									
+							}//for end
+							
+						}
+					mtcentert += '</div>';
+					return mtcentert;
+				},
+				//两列
+				mtfooter:function(msg,start,len){  //msg=数据,start=开始位置,len=数量
+					if(msg[start]==undefined){
+						return "";
+					}
+					var mtcentert = '<div class="mt-footer">',
+						slen=start+len,
+						i=start;
+						for(i;i<slen;i++){
+							if(msg[i]!=undefined){
+									mtcentert += '<a data-uid="'+msg[i].id+'" title="'+msg[i].title+'" href="__PRO__'+msg[i].id+'.html" class="mt-random-list mtpro">';
+									mtcentert += '<div class="mrlf-top"><div class="mt-random-list-bg blur"><img src="__IMAGES__'+msg[i].timg+'"/></div>';
+									mtcentert += '<div class="mrl-img"><img src="__IMAGES__'+msg[i].timg+'"/></div></div>';
+									mtcentert += '<div class="mrlf-bot"><p>'+msg[i].title.substr(0,5)+'</p><span>'+msg[i].title.substr(0,23)+'...</span></div>';
+									mtcentert += '</a>';
+							}
+							
+									
+						}
+					mtcentert += '</div>';
+						return mtcentert;
+					}
+				
+				}
+		</script>
+		<block name="script"></block>
+	</body>
+</html>
